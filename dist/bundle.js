@@ -12,64 +12,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-class Component {
-    handleDataChange() {
-        
-    }
-}
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./component.js");
 
-class Counter extends Component { // В родительский элемент Component прописать 
-    // вызов функции handleDataChange, которая всё обновляет, и обернуть
-    // входящие данные в proxy. А также там с датой надо чё-то пошаманить в Component
 
+class Counter extends _component__WEBPACK_IMPORTED_MODULE_0__["default"] { // Сделать функцию ререндера инпута при изменении data.
+    // Прочитать в последней вкладке про то, как поймать изменения
     constructor() {
         const data = {
             count: 0
-        };
-
-        super(data, this.handleDataChange)
+        }
+        super(data)
+        super.setRerender(this.rerender)
     }
 
-    setCount() {
+    inputChange() {
+        const previousValue = this.data.count;
         this.data.count = parseInt(document.getElementById("counter").value);
+        const presentValue = this.data.count;
+        if (previousValue !== presentValue) {
+            console.log(this.data.count);
+            this.handleDataChange(); 
+        }
+    }
+
+    rerender() {
+        document.getElementById("counter").value = this.data.count;
     }
 
     plusClick() {
         this.data.count += 1;
+        console.log(this.data.count);
+        this.handleDataChange(); 
     }
 
     minusClick() {
         this.data.count -= 1;
+        console.log(this.data.count);
+        this.handleDataChange(); 
     }
 
     render() {
+        console.log(this.data);
         return (/*html*/`
             <button class="item-button" id='minus'>-</button>
             <input class="input" id="counter" type="text" value=${this.data.count}>
-            <button class="item-button" id='plus' >+</button>
+            <button class="item-button" id='plus'>+</button>
       `)
     }
 
     addListeners() {
         document.getElementById('plus').addEventListener('click', this.plusClick.bind(this));
         document.getElementById('minus').addEventListener('click', this.minusClick.bind(this));
-        document.getElementById('counter').addEventListener('blur', this.setCount.bind(this));
+        document.getElementById('counter').addEventListener('blur', this.inputChange.bind(this));
     }
 
     removeListeners() {
         if (document.getElementById('plus') && document.getElementById('minus')) {
             document.getElementById('plus').removeEventListener('click', this.plusClick.bind(this));
             document.getElementById('minus').removeEventListener('click', this.plusClick.bind(this));
-            document.getElementById('counter').removeEventListener('blur', this.setCount.bind(this));
+            document.getElementById('counter').removeEventListener('blur', this.inputChange.bind(this));
         }
-    }
-
-    handleDataChange(data) {
-        const {
-            count
-        } = data;
-
-        document.getElementById("counter").value = count;
     }
 }
 
@@ -91,18 +93,49 @@ __webpack_require__.r(__webpack_exports__);
 
 class Header {
 
-    constructor(text) {
-        this.text = text;
+    constructor() {
+        
+        this.text = "Счётчик";
     }
 
     render() {
         return (`
-      <h1>${this.text = "Счётчик"}</h1>
+      <h1>${this.text}</h1>
       `)
     }
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
+
+/***/ }),
+
+/***/ "./component.js":
+/*!**********************!*\
+  !*** ./component.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class Component {
+    constructor(data) {
+        this.data = data;
+        this.proxy = new Proxy(this.data, {});
+        console.log(this.proxy);
+    }
+
+    handleDataChange() {
+        
+    }
+
+    setRerender(callback) {
+        this.rerender = callback
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Component);
 
 /***/ }),
 
@@ -125,7 +158,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n    font-size: 30px;\n    color: blue;\n}", "",{"version":3,"sources":["webpack://./header.css"],"names":[],"mappings":"AAAA;IACI,eAAe;IACf,WAAW;AACf","sourcesContent":["h1 {\n    font-size: 30px;\n    color: blue;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n    font-size: 50px;\n    color: blue;\n}", "",{"version":3,"sources":["webpack://./header.css"],"names":[],"mappings":"AAAA;IACI,eAAe;IACf,WAAW;AACf","sourcesContent":["h1 {\n    font-size: 50px;\n    color: blue;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -717,8 +750,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Counter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Counter.js */ "./Counter.js");
 /* harmony import */ var _Header_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header.js */ "./Header.js");
 /* harmony import */ var _header_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header.css */ "./header.css");
-
-
 
 
 

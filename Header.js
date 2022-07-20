@@ -2,13 +2,14 @@
 
 class Header {
 
-    constructor(text) {
-        this.text = text;
+    constructor() {
+        
+        this.text = "Счётчик";
     }
 
     render() {
         return (`
-      <h1>${this.text = "Счётчик"}</h1>
+      <h1>${this.text}</h1>
       `)
     }
 }

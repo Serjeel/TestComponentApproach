@@ -2,8 +2,6 @@ import Counter from './Counter.js';
 import Header from './Header.js';
 import './header.css';
 
-
-
 const counter = new Counter({
     onChanged: () => {}
 });
