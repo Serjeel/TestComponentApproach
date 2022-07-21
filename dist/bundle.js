@@ -2,6 +2,40 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./Component.js":
+/*!**********************!*\
+  !*** ./Component.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class Component {
+    constructor(data) {
+        let handler = {
+            set: this.handleDataChange.bind(this)
+        }
+        this.data = new Proxy(data, handler)
+        console.log(this.data);
+    }
+
+    handleDataChange(item, property, value) {
+        item[property] = value
+        this.rerender(this.data)
+        return true
+    }
+
+    setRerender(callback) {
+        this.rerender = callback;
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Component);
+
+/***/ }),
+
 /***/ "./Counter.js":
 /*!********************!*\
   !*** ./Counter.js ***!
@@ -12,11 +46,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./component */ "./component.js");
+/* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component */ "./Component.js");
 
 
-class Counter extends _component__WEBPACK_IMPORTED_MODULE_0__["default"] { // Сделать функцию ререндера инпута при изменении data.
-    // Прочитать в последней вкладке про то, как поймать изменения
+class Counter extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
         const data = {
             count: 0
@@ -31,7 +64,6 @@ class Counter extends _component__WEBPACK_IMPORTED_MODULE_0__["default"] { // С
         const presentValue = this.data.count;
         if (previousValue !== presentValue) {
             console.log(this.data.count);
-            this.handleDataChange(); 
         }
     }
 
@@ -41,18 +73,13 @@ class Counter extends _component__WEBPACK_IMPORTED_MODULE_0__["default"] { // С
 
     plusClick() {
         this.data.count += 1;
-        console.log(this.data.count);
-        this.handleDataChange(); 
     }
 
     minusClick() {
         this.data.count -= 1;
-        console.log(this.data.count);
-        this.handleDataChange(); 
     }
 
     render() {
-        console.log(this.data);
         return (/*html*/`
             <button class="item-button" id='minus'>-</button>
             <input class="input" id="counter" type="text" value=${this.data.count}>
@@ -89,6 +116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _header_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header.css */ "./header.css");
 
 
 class Header {
@@ -106,36 +134,6 @@ class Header {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
-
-/***/ }),
-
-/***/ "./component.js":
-/*!**********************!*\
-  !*** ./component.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-class Component {
-    constructor(data) {
-        this.data = data;
-        this.proxy = new Proxy(this.data, {});
-        console.log(this.proxy);
-    }
-
-    handleDataChange() {
-        
-    }
-
-    setRerender(callback) {
-        this.rerender = callback
-    }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Component);
 
 /***/ }),
 
@@ -747,23 +745,29 @@ var __webpack_exports__ = {};
   !*** ./App.js ***!
   \****************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Counter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Counter.js */ "./Counter.js");
-/* harmony import */ var _Header_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header.js */ "./Header.js");
-/* harmony import */ var _header_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header.css */ "./header.css");
+/* harmony import */ var _Component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Component.js */ "./Component.js");
+/* harmony import */ var _Counter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Counter.js */ "./Counter.js");
+/* harmony import */ var _Header_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header.js */ "./Header.js");
 
 
 
 
-const counter = new _Counter_js__WEBPACK_IMPORTED_MODULE_0__["default"]({
-    onChanged: () => {}
-});
-const header = new _Header_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+// Сделать из App класс и засунуть сюда count и передать его через пропс
 
-document.getElementsByClassName("test")[0].innerHTML = header.render();
+class App extends _Component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    render() {
+        const counter = new _Counter_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const header = new _Header_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
-counter.removeListeners();
-document.getElementsByClassName("test")[0].innerHTML += counter.render();
-counter.addListeners();
+        document.getElementsByClassName("test")[0].innerHTML = header.render();
+
+        counter.removeListeners();
+        document.getElementsByClassName("test")[0].innerHTML += counter.render();
+        counter.addListeners();
+    }
+}
+const app = new App();
+app.render();
 })();
 
 /******/ })()

@@ -1,7 +1,6 @@
-import Component from './component';
+import Component from './Component';
 
-class Counter extends Component { // Сделать функцию ререндера инпута при изменении data.
-    // Прочитать в последней вкладке про то, как поймать изменения
+class Counter extends Component {
     constructor() {
         const data = {
             count: 0
@@ -16,7 +15,6 @@ class Counter extends Component { // Сделать функцию реренд�
         const presentValue = this.data.count;
         if (previousValue !== presentValue) {
             console.log(this.data.count);
-            this.handleDataChange(); 
         }
     }
 
@@ -26,18 +24,13 @@ class Counter extends Component { // Сделать функцию реренд�
 
     plusClick() {
         this.data.count += 1;
-        console.log(this.data.count);
-        this.handleDataChange(); 
     }
 
     minusClick() {
         this.data.count -= 1;
-        console.log(this.data.count);
-        this.handleDataChange(); 
     }
 
     render() {
-        console.log(this.data);
         return (/*html*/`
             <button class="item-button" id='minus'>-</button>
             <input class="input" id="counter" type="text" value=${this.data.count}>

@@ -1,14 +1,20 @@
+import Component from './Component.js';
 import Counter from './Counter.js';
 import Header from './Header.js';
-import './header.css';
 
-const counter = new Counter({
-    onChanged: () => {}
-});
-const header = new Header();
+// Сделать из App класс и засунуть сюда count и передать его через пропс
 
-document.getElementsByClassName("test")[0].innerHTML = header.render();
+class App extends Component {
+    render() {
+        const counter = new Counter();
+        const header = new Header();
 
-counter.removeListeners();
-document.getElementsByClassName("test")[0].innerHTML += counter.render();
-counter.addListeners();
+        document.getElementsByClassName("test")[0].innerHTML = header.render();
+
+        counter.removeListeners();
+        document.getElementsByClassName("test")[0].innerHTML += counter.render();
+        counter.addListeners();
+    }
+}
+const app = new App();
+app.render();
