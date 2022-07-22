@@ -1,9 +1,9 @@
 import Component from './Component';
 
 class Counter extends Component {
-    constructor() {
+    constructor(props) {
         const data = {
-            count: 0
+            count: props.initialCount,
         }
         super(data)
         super.setRerender(this.rerender)

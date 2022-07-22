@@ -2,11 +2,13 @@ import Component from './Component.js';
 import Counter from './Counter.js';
 import Header from './Header.js';
 
-// Сделать из App класс и засунуть сюда count и передать его через пропс
+// Переделать render под html и начинать переносить Subway на классовый подход
 
 class App extends Component {
     render() {
-        const counter = new Counter();
+        const counter = new Counter({
+            initialCount: 0
+        });
         const header = new Header();
 
         document.getElementsByClassName("test")[0].innerHTML = header.render();
@@ -17,4 +19,5 @@ class App extends Component {
     }
 }
 const app = new App();
-app.render();
+document.body.innerHTML = app.render();
+app.addListeners()

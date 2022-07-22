@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 class Component {
-    constructor(data) {
+    constructor(data = {}) {
         let handler = {
             set: this.handleDataChange.bind(this)
         }
@@ -50,9 +50,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Counter extends _Component__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor() {
+    constructor(props) {
         const data = {
-            count: 0
+            count: props.initialCount,
         }
         super(data)
         super.setRerender(this.rerender)
@@ -752,11 +752,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Сделать из App класс и засунуть сюда count и передать его через пропс
+// Переделать render под html и начинать переносить Subway на классовый подход
 
 class App extends _Component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     render() {
-        const counter = new _Counter_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const counter = new _Counter_js__WEBPACK_IMPORTED_MODULE_1__["default"]({
+            initialCount: 0
+        });
         const header = new _Header_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
 
         document.getElementsByClassName("test")[0].innerHTML = header.render();
@@ -767,7 +769,8 @@ class App extends _Component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 }
 const app = new App();
-app.render();
+document.body.innerHTML = app.render();
+app.addListeners()
 })();
 
 /******/ })()

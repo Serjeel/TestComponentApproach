@@ -1,5 +1,5 @@
 class Component {
-    constructor(data) {
+    constructor(data = {}) {
         let handler = {
             set: this.handleDataChange.bind(this)
         }
